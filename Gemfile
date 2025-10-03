@@ -62,7 +62,7 @@ end
 
 gem "devise", "~> 4.9"
 
-gem "annotate", "~> 2.6", :group => :development
+gem 'annot8', '~> 1.0', require: false
 gem "letter_opener", "~> 1.10", :group => :development
 
 gem "dotenv-rails", "~> 3.1", :groups => [:development, :test]

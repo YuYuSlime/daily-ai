@@ -1,28 +1,38 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Daily" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Railsopenai</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= yield :head %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
+<body>
+  <div class="container-fluid d-flex vh-100">
+    <div class="row align-self-stretch w-100">
+      <div class="col-md-2 mx-auto bg-dark text-white">
+        <div class="w-100 text-center d-flex justify-content-center mt-3">
+          <%= form_with(model: Chat.new) do |form| %>
+            <%= form.submit '+ New Chat', class: 'btn btn-dark border-light' if current_user.present? %>
+          <% end %>
+        </div>
+        <div>
+          <h4>Today</h4>
+            <turbo-frame id="user-chats">
+            <%= render partial: "chats/chat_list", collection: current_user.chats  if current_user.present?  %>
+        </turbo-frame>
+        
+        </div>
+        
+      </div>
+      <div class="col-10">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
